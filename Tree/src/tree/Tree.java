@@ -71,7 +71,7 @@ public class Tree {
                 Inteiros left = root.getLeft().getLeft(),rigth = root.getLeft().getRigth();
                 root.setLeft(null);
                 this.insert(left);
-                this.insert(left);
+                this.insert(rigth);
             }
             else{
                remove(root.getLeft(), value);
