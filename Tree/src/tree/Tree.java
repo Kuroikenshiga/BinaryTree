@@ -1,6 +1,6 @@
 package tree;
 public class Tree {
-    
+    //Funcionou
     private Inteiros root;
 
     public boolean isEmpty(){
