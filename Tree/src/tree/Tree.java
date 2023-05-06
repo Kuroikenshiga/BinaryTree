@@ -1,6 +1,6 @@
 package tree;
 public class Tree {
-    //Funcionou
+    
     private Inteiros root;
 
     public boolean isEmpty(){
@@ -57,10 +57,24 @@ public class Tree {
     private void remove(Inteiros root,int value){
         if(value > root.getValue()){
             if(value == root.getRigth().getValue()){
-                Inteiros left = root.getRigth().getLeft(),right = root.getRigth().getRigth();
-                root.setRigth(null);
-                this.insert(left);
-                this.insert(right);
+                if(root.getRigth().getRigth() != null && root.getRigth().getLeft() != null){
+                    Inteiros aux = this.getSmallest(root.getRigth().getRigth());
+                    this.remove(aux.getValue());
+                    aux.setRigth(root.getRigth().getRigth());
+                    aux.setLeft(root.getRigth().getLeft());
+                    root.setRigth(aux);
+                }
+                else if(root.getRigth().getRigth() == null && root.getRigth().getLeft() == null){
+                    root.setRigth(null);
+                }
+                else{
+                    if(root.getRigth().getRigth() != null){
+                        root.setRigth(root.getRigth().getRigth());
+                    }
+                    else{
+                        root.setRigth(root.getRigth().getLeft());
+                    }
+                }
             }
             else{
                 remove(root.getRigth(), value);
@@ -68,20 +82,36 @@ public class Tree {
         }
         else if(value < root.getValue()){
             if(value == root.getLeft().getValue()){
-                Inteiros left = root.getLeft().getLeft(),rigth = root.getLeft().getRigth();
-                root.setLeft(null);
-                this.insert(left);
-                this.insert(rigth);
+                if(root.getLeft().getRigth() != null && root.getLeft().getLeft() != null){
+                    Inteiros aux = this.getSmallest(root.getLeft().getRigth());
+                    this.remove(aux.getValue());
+                    aux.setRigth(root.getLeft().getRigth());
+                    aux.setLeft(root.getLeft().getLeft());
+                    root.setLeft(aux);
+                }
+                else if(root.getLeft().getRigth() == null && root.getLeft().getLeft() == null){
+                    root.setLeft(null);
+                }
+                else{
+                    if(root.getLeft().getRigth() != null){
+                        root.setLeft(root.getLeft().getRigth());
+                    }
+                    else{
+                        root.setLeft(root.getLeft().getLeft());
+                    }
+                }
+                
             }
             else{
                remove(root.getLeft(), value);
         }
         }
         else{
-            Inteiros rigth = root.getRigth(),left = root.getLeft();
-            this.root = left;
-            this.insert(rigth);
-            
+            Inteiros aux = this.getSmallest(root.getRigth());
+            this.remove(aux.getValue());
+            aux.setRigth(root.getRigth());
+            aux.setLeft(root.getLeft());
+            this.root = aux;
         }
     }
     
@@ -119,5 +149,24 @@ public class Tree {
         }
         return true;
         
+    }
+    public Inteiros getSmallest(){
+        return getSmallest(root);
+    }
+    private Inteiros getSmallest(Inteiros root){
+        if(root.getLeft() == null){
+            return root;
+        }
+        return getSmallest(root.getLeft());
+    }
+    
+    public Inteiros getBiggest(){
+        return getBiggest(root);
+    }
+    private Inteiros getBiggest(Inteiros root){
+        if(root.getRigth() == null){
+            return root;
+        }
+        return getBiggest(root.getRigth());
     }
 }
